@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Абсолютно рандомный рандомайзер кубов без подкрутки и читерства онлайн без регистрации и смс Ольга 200 метров от вас</title>
+    <link rel="icon" type="image/png" href="https://psv4.userapi.com/s/v1/d2/hbDT7qJQH5xLz9K8di0qkPsXL0uJo-CvsAiHW1z_9B5t2VOOF-NwJzGyBvTL2zGHZGXJgRYH5AcqTP7VAHjyD-5sJT4YUbRh0BfqqhOivA5fbSp0PXWwon5gqWPoP2WOrAJ9FCZnYIBU/Ikonka_Sai_774_ta.png">
     <style>
         * {
             margin: 0;
@@ -23,12 +24,9 @@
             color: #eee;
             min-height: 100vh;
             padding: 60px 20px 40px 20px;
-            /* НИКАКОГО FLEX НА BODY */
             text-align: center;
-            /* чтобы инлайново центрировать контейнер */
         }
 
-        /* ХИТРОСТЬ: body — text-align: center, а container — inline-block + text-align: left */
         .container {
             display: inline-block;
             text-align: left;
@@ -183,7 +181,6 @@
             color: #e94560;
         }
 
-        /* --- РЕАКЦИИ --- */
         .reaction {
             margin-top: 12px;
             padding: 10px 15px;
@@ -252,7 +249,6 @@
             }
         }
 
-        /* --- ПЕРСОНАЖ В УГЛУ (ТЕНЕВАЯ ИЗОЛЯЦИЯ) --- */
         .character-anchor {
             position: fixed;
             top: 0;
@@ -331,7 +327,6 @@
             }
         }
 
-        /* --- АДАПТИВ --- */
         @media (max-width: 700px) {
             body {
                 padding: 20px 10px 30px 10px;
@@ -448,22 +443,12 @@
     </div>
 
     <script>
-        /**
-         * КРИПТОГРАФИЧЕСКИ ЧЕСТНЫЙ БРОСОК КУБИКА
-         * 
-         * @param {number} min - нижняя граница (всегда 1)
-         * @param {number} max - верхняя граница (количество граней)
-         * @returns {number} - случайное целое от min до max включительно
-         */
         function fairRoll(min, max) {
-            // Используем криптографически стойкий генератор
             const range = max - min + 1;
             const maxUint32 = 4294967295; // 2^32 - 1
 
-            // Беззнаковый 32-битный массив
             const randomBuffer = new Uint32Array(1);
 
-            // Вычисляем максимальное допустимое значение, чтобы избежать смещения
             const maxValid = maxUint32 - (maxUint32 % range);
 
             let randomValue;
@@ -475,14 +460,9 @@
             return min + (randomValue % range);
         }
 
-        /**
-         * Парсит строку вида "3d6+2" и возвращает массив результатов
-         */
         function parseAndRoll(formula) {
-            // Убираем пробелы
             formula = formula.trim().toLowerCase();
 
-            // Регулярка: (количество)d(грани)[+-](модификатор) — модификатор опционален
             const match = formula.match(/^(\d+)d(\d+)([+-]\d+)?$/);
 
             if (!match) {
@@ -493,13 +473,11 @@
             const sides = parseInt(match[2]);
             const modifier = match[3] ? parseInt(match[3]) : 0;
 
-            // Проверки на дурака
             if (count < 1) return { error: "Количество кубиков должно быть хотя бы 1" };
             if (count > 1000) return { error: "Слишком много кубиков. Максимум: 1000 за раз." };
             if (sides < 2) return { error: "Граней должно быть минимум 2" };
             if (sides > 1000000) return { error: "Слишком много граней. Максимум: 1,000,000" };
 
-            // БРОСАЕМ КУБИКИ
             const rolls = [];
             let total = 0;
 
@@ -509,7 +487,6 @@
                 total += roll;
             }
 
-            // Применяем модификатор
             const finalTotal = total + modifier;
 
             return {
@@ -525,14 +502,13 @@
 
 
         const REACTIONS = {
-            // Когда на d20 выпала 20
             crit20: [
                 "Брооооооо!",
                 "НАВЫКИ КРИТУЮТ НАВЫКИ КРИТУЮТ НАВЫКИ КРИТУЮТ!",
                 "Шучу, это 1...",
                 "Надеюсь, это был бросок не по игрокам...."
             ],
-            // Когда на d20 выпала 1
+
             fail1: [
                 "Надеюсь, ты не пытался соблазнить дракона... clueless...",
                 "Бро, ну это позор, я даже не знаю, что и сказать",
@@ -540,36 +516,30 @@
                 "Надейся, что в этой жизни хуже этого момента не будет",
                 "Edmund McMillen. You little fucker. You made a shit of piece with your trash Isaac. It's fucking bad this thrash game . I will become back my money. I hope you will in your next time a cow on a trash farm you sucker."
             ],
-            // Все единицы (для любого кубика, где count > 1)
             allOnes: [
                 "Братан, это пизда, я даже не знаю, как отреагировать.",
                 "KYS.",
                 "Шанс утонуть сегодня в луже как никогда велик."
             ],
-            // Все максимальные значения (для любого кубика)
             allMax: [
                 "Если кубиков было больше 5, то купи лотерейный билетик, я даже не знаю",
                 "GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 GEM ALERT 💎🚨🗣 ",
                 "Попроси у Мастера сделать твоего персонажа мэрь-сью, может повезет. Если ты мастер, то тебе стоит просить у игроков пощады... Обычно такие кубы кидаются на урон...",
                 "Если твоя сила в этом броске кубика, то кто ты без него?"
             ],
-            // Сумма на d20 с модификатором >= 30
+
             highRoll: [
                 "Ну, если тебе интересно, это хайролл, но не то, чтобы мне было не всё равно на тебя, дурак!",
                 "Ай"
             ]
         };
 
-        /**
-         * Выбирает случайную фразу из массива
-         */
+
         function randomPhrase(phrases) {
             return phrases[Math.floor(Math.random() * phrases.length)];
         }
 
-        /**
-         * Отображает результаты на странице
-         */
+
         function displayResults(allResults) {
             const container = document.getElementById('results');
             const errorEl = document.getElementById('error');
@@ -589,7 +559,6 @@
                     continue;
                 }
 
-                // Определяем специальные классы для d20
                 const highlightD20 = (res.sides === 20);
 
                 let reactionHTML = '';
@@ -599,12 +568,12 @@
                     reactionHTML = randomPhrase(REACTIONS.allOnes);
                     reactionClass = 'reaction-bad';
                 }
-                // Проверка: все кубики выпали максимумом
+
                 else if (res.count > 1 && res.rolls.every(r => r === res.sides)) {
                     reactionHTML = randomPhrase(REACTIONS.allMax);
                     reactionClass = 'reaction-godly';
                 }
-                // Проверка: d20 конкретно
+
                 else if (res.sides === 20) {
                     if (res.rolls.includes(20)) {
                         reactionHTML = randomPhrase(REACTIONS.crit20);
@@ -615,11 +584,11 @@
                     }
                 }
 
-                // Если есть реакция — добавим блок под кубиками
+
                 const reactionBlock = reactionHTML ?
                     `<div class="reaction ${reactionClass}">${reactionHTML}</div>` : '';
 
-                // Собираем отображение кубиков
+
                 let diceHtml = '';
                 for (const roll of res.rolls) {
                     let dieClass = 'die';
@@ -632,7 +601,7 @@
                     diceHtml += `<span class="${dieClass}">${roll}</span>`;
                 }
 
-                // Формируем строку модификатора для заголовка
+
                 let formulaDisplay = res.formula;
                 if (res.modifier === 0 && res.count === 1 && res.sides === 20) {
                     formulaDisplay = 'd20';
@@ -653,9 +622,7 @@
             container.innerHTML = html;
         }
 
-        /**
-         * Главная функция броска
-         */
+
         function rollDice() {
             const input = document.getElementById('diceInput');
             const rawText = input.value.trim();
@@ -665,7 +632,7 @@
                 return;
             }
 
-            // Разбиваем по пробелам — можно кинуть несколько групп кубов
+
             const formulas = rawText.split(/\s+/);
             const allResults = [];
 
@@ -679,34 +646,26 @@
             displayResults(allResults);
         }
 
-        /**
-         * Быстрый бросок по клику на пример
-         */
+
         function quickRoll(formula) {
             document.getElementById('diceInput').value = formula;
             rollDice();
         }
 
-        /**
-         * Бросок по Enter
-         */
+
         document.getElementById('diceInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 rollDice();
             }
         });
 
-        /**
-         * ДЕМОНСТРАЦИЯ: при загрузке делаем тестовый бросок
-         */
+
         window.addEventListener('load', function () {
             document.getElementById('diceInput').value = '1d20';
-            // rollDice(); // раскомментируй, чтобы сразу показывать бросок при загрузке
+            // rollDice();
         });
 
-        /**
-* СЛУЧАЙНАЯ ФРАЗА ПЕРСОНАЖА ПРИ ЗАГРУЗКЕ
-*/
+
         const CHARACTER_PHRASES = [
             "Когда-то и меня вела дорога приключений, а потом мне прострелили колено...",
             "И зачем ты открыл этот сайт? Найди работу, построй семью, потрогай траву хотя бы!",
@@ -725,9 +684,6 @@
             "Сюда я потом вставлю текст, чтобы ты прошел тест «Какой ты Паразит». Если ты сейчас читаешь это - пробей мне плечо. ",
         ];
 
-        /**
-         * Устанавливает случайную фразу при загрузке
-         */
         function setRandomPhrase() {
             const phraseEl = document.getElementById('charPhrase');
             if (phraseEl) {
@@ -736,14 +692,13 @@
             }
         }
 
-        // Вызываем при загрузке страницы
         window.addEventListener('DOMContentLoaded', setRandomPhrase);
 
         const EASTER_EGG_TABLE = [
             {
                 id: 'squeak',
                 sound: 'https://www.myinstants.com/media/sounds/duck-toy-sound.mp3',
-                weight: 60,  // 60% шанс
+                weight: 60,
                 phrases: [
                     "Что ты сейчас сделал?...",
                     "Личное пространство!!",
@@ -756,7 +711,7 @@
             {
                 id: 'burp',
                 sound: 'https://www.myinstants.com/media/sounds/fnaf-12-3-freddys-nose-sound.mp3',
-                weight: 15,  // 15% шанс
+                weight: 15,
                 phrases: [
                     "СЫН ■■■■■.",
                     "Советую тебе чаще оборачиваться на улице.",
@@ -768,7 +723,7 @@
             {
                 id: 'laugh',
                 sound: 'https://www.myinstants.com/media/sounds/lego-breaking.mp3',
-                weight: 10,  // 10% шанс
+                weight: 10,
                 phrases: [
                     "Ты вообще видел меня? Ты сто процентов мне кость какую-то сейчас сломал!",
                     "KYS!",
@@ -779,7 +734,7 @@
             {
                 id: 'dragon',
                 sound: 'https://www.myinstants.com/media/sounds/lobotomy-sound-effect.mp3',  // замени на прямую ссылку на mp3
-                weight: 8,  // 8% шанс
+                weight: 8,
                 phrases: [
                     "Наигрался? ХВАТИТ ТЫКАТЬ ИГРАЙ ПАРТИЮ!!",
                     "60.073504, 30.203974",
@@ -790,7 +745,7 @@
             {
                 id: 'fart',
                 sound: 'https://www.myinstants.com/media/sounds/chicken-on-tree-screaming.mp3',
-                weight: 5,  // 5% шанс
+                weight: 5,
                 phrases: [
                     "В очко себе тыкни ☆*:.｡.o(≧▽≦)o.｡.:*☆ ",
                     "https://i.pinimg.com/736x/0c/f8/53/0cf85380501ed27d73df44e761f74cb1.jpg",
@@ -801,7 +756,7 @@
             {
                 id: 'magic',
                 sound: 'https://www.myinstants.com/media/sounds/zdravstvuite-nichtozhnye-nishchie-smertnye.mp3',
-                weight: 1,  // 1% шанс (легендарный лут)
+                weight: 1,
                 phrases: [
                     "Я буквально СОЗДАТЕЛЬ этого мира, если я захочу, твоего персонажа просто СОТРЕТ из истории... Ты хотел услышать что-то такое?",
                     "А знаешь что, кинь д100, давай, скажи результат Мастеру, давай-давай...",
@@ -811,7 +766,7 @@
             {
                 id: 'secret',
                 sound: 'https://www.myinstants.com/media/sounds/m-e-o-w.mp3',
-                weight: 1,  // 1% шанс (мифический лут)
+                weight: 1,
                 phrases: [
                     "Ты нашёл секретный звук! Отними у себя 100 опыта.",
                     "*звон разбитого стекла и крик кошки* Упси. Это был твой любимый меч/посох? Как жааааль...",
@@ -820,17 +775,12 @@
             },
         ];
 
-        /**
-         * Выбирает элемент из таблицы по весам
-         */
+
         function weightedRandomSelect(table) {
-            // Считаем общую сумму весов
             const totalWeight = table.reduce((sum, entry) => sum + entry.weight, 0);
 
-            // Случайное число от 0 до totalWeight (невключительно)
             const random = Math.floor(Math.random() * totalWeight);
 
-            // Идём по таблице и вычитаем веса, пока не дойдём до цели
             let cumulative = 0;
             for (const entry of table) {
                 cumulative += entry.weight;
@@ -839,28 +789,23 @@
                 }
             }
 
-            // Fallback (не должен случиться, но на всякий случай)
             return table[0];
         }
 
-        // Счётчик кликов и отслеживание выпавших идов
         let clickCount = 0;
         const soundStats = {};  // { 'squeak': 3, 'dragon': 1, ... }
 
         document.querySelector('.character-portrait').addEventListener('click', function () {
             clickCount++;
 
-            // Выбираем лут по таблице весов
             const loot = weightedRandomSelect(EASTER_EGG_TABLE);
 
-            // Записываем статистику
             soundStats[loot.id] = (soundStats[loot.id] || 0) + 1;
 
-            // Проигрываем звук
             const sound = document.getElementById('easterEggSound');
             if (sound && loot.sound) {
                 sound.querySelector('source').src = loot.sound;
-                sound.load();  // перезагружаем с новым источником
+                sound.load();
                 sound.currentTime = 0;
                 sound.play().catch(() => { });
             }
@@ -870,24 +815,23 @@
                 if (clickCount % 25 === 0) {
                     phraseEl.textContent = `Ты ткнул в меня ${clickCount} раз! Ты в принципе отдаешь себе отчет, что ты делаешь в своей жизни?!`;
                 }
-                // Каждый 50-й клик — особая фраза
+
                 else if (clickCount % 50 === 0) {
                     phraseEl.textContent = `Ты ткнул в меня ${clickCount} раз! Ты что, пытаешься выбить ачивку?! Ну хорошо, запиши, что твой персонаж прямо сейчас обоссался.`;
                 }
-                // Обычная фраза из текущего лута
+
                 else {
                     const phrase = loot.phrases[Math.floor(Math.random() * loot.phrases.length)];
                     phraseEl.textContent = phrase;
                 }
             }
 
-            // Анимация дёргания портрета
+
             this.style.transform = 'scale(0.85)';
             setTimeout(() => {
                 this.style.transform = 'scale(1)';
             }, 100);
 
-            // Выводим в консоль для отладки (можно убрать)
             console.log(`Клик ${clickCount}: выпал "${loot.id}" (шанс: ${loot.weight}/${EASTER_EGG_TABLE.reduce((s, e) => s + e.weight, 0)})`);
         });
 
